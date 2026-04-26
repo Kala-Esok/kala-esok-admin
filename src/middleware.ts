@@ -15,7 +15,7 @@ const PROTECTED_ROUTES = [
 
 const AUTH_ROUTES = ['/login'];
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const token = await getToken({
@@ -42,5 +42,16 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|public).*)'],
+  matcher: [
+    '/dashboard/:path*',
+    '/manajemen-user/:path*',
+    '/verifikasi-dokumen/:path*',
+    '/layanan-paket/:path*',
+    '/checkout-payment/:path*',
+    '/database-pemakaman/:path*',
+    '/cms-blog/:path*',
+    '/pengaturan/:path*',
+    '/login',
+    '/register',
+  ],
 };
