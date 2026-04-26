@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kala Esok — Admin Dashboard
+
+> Frontend admin dashboard untuk platform perencanaan pemakaman **Kala Esok**.
+
+## Tech Stack
+
+| Layer         | Library                   |
+| ------------- | ------------------------- |
+| Framework     | Next.js 16 (App Router)   |
+| Styling       | Tailwind CSS v4           |
+| UI Components | Shadcn UI                 |
+| Auth          | NextAuth.js v4 (JWT)      |
+| State         | Redux Toolkit             |
+| Icons         | Lucide React              |
+| Charts        | Recharts                  |
+| Code Quality  | ESLint + Prettier + Husky |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Open in browser
+http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Demo Login:**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Email: `admin@kalaesok.com`
+- Password: `admin123`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+src/
+├── app/
+│   ├── (auth)/login/           # Login page
+│   ├── (dashboard)/            # Protected dashboard routes
+│   │   ├── layout.tsx          # Sidebar + Header layout
+│   │   ├── dashboard/          # Dashboard Overview
+│   │   ├── manajemen-user/     # User Management
+│   │   ├── verifikasi-dokumen/ # Document Verification
+│   │   ├── layanan-paket/      # Service Packages
+│   │   ├── checkout-payment/   # Transactions & Paylater
+│   │   ├── database-pemakaman/ # Cemetery Database
+│   │   ├── cms-blog/           # CMS Blog & Kitab
+│   │   └── pengaturan/         # Settings
+│   └── api/auth/[...nextauth]/ # NextAuth API
+├── components/
+│   ├── layout/                 # Sidebar, Header
+│   ├── providers/              # Auth & Redux providers
+│   └── shared/                 # Reusable: DataTable, StatsCard, StatusBadge, PageHeader
+├── lib/
+│   ├── store/                  # Redux store, slices, hooks
+│   ├── api.ts                  # API service layer (BE-ready)
+│   ├── auth.ts                 # NextAuth config
+│   ├── dummy-data.ts           # Mock data (replace with real API)
+│   └── utils.ts                # cn() helper
+├── proxy.ts                    # Next.js 16 route protection
+└── types/                      # Global TypeScript types
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Connecting to Backend
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Set `NEXT_PUBLIC_API_URL` in `.env.local`
+2. Replace dummy data imports with the service calls in `src/lib/api.ts`
+3. Each page already has the service functions ready to use
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```ts
+// Example: Replace dummy data in manajemen-user/page.tsx
+import { userService } from '@/lib/api';
+const { data } = await userService.getAll(session.token);
+```
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run dev          # Start dev server
+npm run build        # Production build
+npm run lint         # Lint check
+npm run lint:fix     # Auto-fix lint errors
+npm run format       # Format all files
+npm run type-check   # TypeScript check
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Environment Variables
+
+```env
+NEXTAUTH_SECRET=your-secret-here
+NEXTAUTH_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://your-api.com/api
+```
