@@ -48,29 +48,31 @@ export default function VerifikasiDokumenPage() {
       />
 
       {/* Tabs */}
-      <div className="bg-white rounded-2xl border border-brand-border shadow-sm overflow-hidden">
-        <div className="flex border-b border-brand-border overflow-x-auto">
+      <div className="bg-card rounded-2xl border border-brand-border shadow-sm overflow-hidden">
+        <div className="flex border-b border-brand-border overflow-x-auto scrollbar-hide bg-brand-surface/30 dark:bg-brand-sidebar/20">
           {tabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={cn(
-                'px-6 py-4 text-sm font-medium whitespace-nowrap transition-all duration-200 relative',
-                activeTab === tab ? 'text-brand-primary' : 'text-brand-muted hover:text-brand-text'
+                'px-8 py-5 text-sm font-bold whitespace-nowrap transition-all duration-200 relative',
+                activeTab === tab
+                  ? 'text-brand-primary'
+                  : 'text-brand-muted hover:text-brand-text hover:bg-brand-surface dark:hover:bg-brand-sidebar/40'
               )}
             >
               {tab}
               {activeTab === tab && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary rounded-full" />
+                <span className="absolute bottom-0 left-0 right-0 h-1 bg-brand-primary rounded-t-full shadow-[0_-2px_8px_rgba(255,130,58,0.5)]" />
               )}
             </button>
           ))}
         </div>
 
         {/* Document Cards */}
-        <div className="p-6">
+        <div className="p-8">
           {filtered.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filtered.map((doc) => (
                 <DocumentCard
                   key={doc.id}
@@ -81,7 +83,9 @@ export default function VerifikasiDokumenPage() {
               ))}
             </div>
           ) : (
-            <EmptyState description="Tidak ada dokumen di kategori ini" />
+            <div className="py-12">
+              <EmptyState description="Tidak ada dokumen di kategori ini" />
+            </div>
           )}
         </div>
       </div>
@@ -108,39 +112,44 @@ function DocumentCard({
   onReject: () => void;
 }) {
   return (
-    <div className="border border-brand-border rounded-xl p-5 hover:shadow-md transition-all duration-200 group">
-      <div className="flex items-start justify-between mb-4">
-        <div className="p-2.5 bg-orange-50 rounded-lg group-hover:bg-brand-primary/10 transition-colors">
-          <FileText className="w-5 h-5 text-brand-primary" />
+    <div className="bg-brand-surface/30 dark:bg-brand-sidebar/10 border border-brand-border rounded-2xl p-6 hover:shadow-xl hover:border-brand-primary/30 transition-all duration-300 group">
+      <div className="flex items-start justify-between mb-5">
+        <div className="p-3 bg-brand-primary/10 rounded-xl group-hover:scale-110 transition-transform">
+          <FileText className="w-6 h-6 text-brand-primary" />
         </div>
         <StatusBadge label={doc.status} variant={statusVariant[doc.status]} />
       </div>
 
-      <h3 className="font-semibold text-brand-text mb-1">{doc.title}</h3>
-      <p className="text-xs text-brand-muted mb-4">{doc.owner}</p>
+      <h3 className="font-bold text-brand-text text-lg mb-1 group-hover:text-brand-primary transition-colors">
+        {doc.title}
+      </h3>
+      <p className="text-xs text-brand-muted font-medium mb-6 flex items-center gap-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-brand-primary/40"></span>
+        {doc.owner}
+      </p>
 
-      <div className="flex items-center gap-2">
-        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-brand-border text-xs text-brand-muted hover:border-brand-primary hover:text-brand-primary transition-all">
-          <Eye className="w-3.5 h-3.5" />
+      <div className="flex items-center gap-3">
+        <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-brand-border bg-card text-xs font-bold text-brand-muted hover:border-brand-primary hover:text-brand-primary transition-all active:scale-95 shadow-sm">
+          <Eye className="w-4 h-4" />
           Lihat
         </button>
         {doc.status === 'Menunggu' && (
-          <>
+          <div className="flex gap-2">
             <button
               onClick={onApprove}
-              className="p-1.5 rounded-lg border border-green-200 text-green-600 hover:bg-green-50 transition-all"
+              className="p-2.5 rounded-xl border border-brand-success/30 text-brand-success bg-brand-success/5 hover:bg-brand-success hover:text-white transition-all active:scale-90"
               title="Setujui"
             >
               <Check className="w-4 h-4" />
             </button>
             <button
               onClick={onReject}
-              className="p-1.5 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 transition-all"
+              className="p-2.5 rounded-xl border border-brand-danger/30 text-brand-danger bg-brand-danger/5 hover:bg-brand-danger hover:text-white transition-all active:scale-90"
               title="Tolak"
             >
               <X className="w-4 h-4" />
             </button>
-          </>
+          </div>
         )}
       </div>
     </div>

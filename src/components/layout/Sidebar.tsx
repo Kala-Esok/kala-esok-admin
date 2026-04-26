@@ -17,7 +17,6 @@ import {
 
 const MENU_ITEMS = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Profil Saya', href: '/profil', icon: Users },
   { name: 'Manajemen User', href: '/manajemen-user', icon: Users },
 
   { name: 'Verifikasi Dokumen', href: '/verifikasi-dokumen', icon: FileCheck },

@@ -113,52 +113,68 @@ function PackageCard({
   return (
     <div
       className={cn(
-        'rounded-2xl p-6 border transition-all duration-200 hover:shadow-lg relative overflow-hidden',
-        pkg.highlight ? 'border-brand-primary bg-brand-primary/5' : 'border-brand-border bg-white'
+        'rounded-3xl p-8 border transition-all duration-300 hover:shadow-2xl relative overflow-hidden group',
+        pkg.highlight
+          ? 'border-brand-primary bg-brand-primary/5 ring-1 ring-brand-primary/20 shadow-lg shadow-brand-primary/5'
+          : 'border-brand-border bg-card hover:border-brand-primary/30 shadow-sm'
       )}
     >
       {pkg.highlight && (
         <div className="absolute top-0 right-0">
-          <div className="bg-brand-primary text-white text-[10px] font-semibold px-3 py-1 rounded-bl-xl">
+          <div className="bg-brand-primary text-white text-[10px] font-bold px-4 py-1.5 rounded-bl-2xl uppercase tracking-widest">
             POPULER
           </div>
         </div>
       )}
 
-      <div className="flex items-start justify-between mb-2">
-        <h3 className="text-base font-bold text-brand-text">{pkg.name}</h3>
-        <div className="flex items-center gap-1.5">
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <h3 className="text-lg font-bold text-brand-text mb-1">{pkg.name}</h3>
+          <p className="text-[10px] font-bold text-brand-muted uppercase tracking-tighter">
+            Paket Layanan
+          </p>
+        </div>
+        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={onEdit}
-            className="p-1.5 rounded-lg text-brand-muted hover:text-brand-primary hover:bg-orange-50 transition-all"
+            className="p-2 rounded-xl text-brand-muted hover:text-brand-primary hover:bg-brand-surface dark:hover:bg-brand-sidebar/60 transition-all"
+            title="Edit Paket"
           >
             <Pencil className="w-4 h-4" />
           </button>
           <button
             onClick={onDelete}
-            className="p-1.5 rounded-lg text-brand-muted hover:text-brand-danger hover:bg-red-50 transition-all"
+            className="p-2 rounded-xl text-brand-muted hover:text-brand-danger hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
+            title="Hapus Paket"
           >
             <Trash2 className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      <p className="text-2xl font-extrabold text-brand-primary mb-1">{formatRupiah(pkg.price)}</p>
-      <p className="text-sm text-brand-muted mb-5">{pkg.description}</p>
+      <div className="mb-6">
+        <p className="text-3xl font-black text-brand-primary">{formatRupiah(pkg.price)}</p>
+        <p className="text-xs text-brand-muted mt-2 leading-relaxed">{pkg.description}</p>
+      </div>
 
-      <div className="border-t border-brand-border pt-4 mb-5">
-        <p className="text-xs font-semibold text-brand-text uppercase tracking-wider mb-3">
-          Benefit Paket:
+      <div className="border-t border-brand-border pt-6 mt-2">
+        <p className="text-xs font-bold text-brand-text uppercase tracking-widest mb-4 flex items-center gap-2">
+          <span className="w-4 h-px bg-brand-primary"></span>
+          Benefit Paket
         </p>
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {pkg.benefits.map((benefit, i) => (
-            <li key={i} className="flex items-start gap-2.5 text-sm text-brand-muted">
-              <CheckCircle2 className="w-4 h-4 text-brand-success mt-0.5 flex-shrink-0" />
-              {benefit}
+            <li key={i} className="flex items-start gap-3 text-sm text-brand-muted group/item">
+              <div className="p-0.5 rounded-full bg-brand-success/10 text-brand-success mt-0.5 flex-shrink-0 group-hover/item:bg-brand-success group-hover/item:text-white transition-colors">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+              </div>
+              <span className="group-hover/item:text-brand-text transition-colors">{benefit}</span>
             </li>
           ))}
         </ul>
       </div>
+
+      <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-brand-primary/5 rounded-full blur-2xl group-hover:bg-brand-primary/10 transition-all" />
     </div>
   );
 }
