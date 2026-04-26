@@ -1,26 +1,154 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@plugin "tailwindcss-animate";
 
-@theme inline {
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-sidebar: var(--brand-sidebar);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-primary-hover: var(--brand-primary-hover);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-text: var(--brand-text);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-border: var(--brand-border);
+  --color-brand-success: var(--brand-success);
+  --color-brand-warning: var(--brand-warning);
+  --color-brand-danger: var(--brand-danger);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: #fff7f2;
+  --foreground: #2d1e16;
+
+  --card: #ffffff;
+  --card-foreground: #2d1e16;
+
+  --popover: #ffffff;
+  --popover-foreground: #2d1e16;
+
+  --primary: #ff823a;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f3eae4;
+  --secondary-foreground: #2d1e16;
+
+  --muted: #f3eae4;
+  --muted-foreground: #8e7c73;
+
+  --accent: #f3eae4;
+  --accent-foreground: #2d1e16;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #e8dcd5;
+  --input: #e8dcd5;
+  --ring: #ff823a;
+
+  --radius: 0.75rem;
+
+  /* Brand Colors */
+  --brand-sidebar: #874618;
+  --brand-primary: #ff823a;
+  --brand-primary-hover: #f27631;
+  --brand-surface: #fff7f2;
+  --brand-text: #2d1e16;
+  --brand-muted: #8e7c73;
+  --brand-border: #e8dcd5;
+  --brand-success: #22c55e;
+  --brand-warning: #eab308;
+  --brand-danger: #ef4444;
+}
+
+.dark {
+  --background: #1a120e;
+  --foreground: #f3eae4;
+
+  --card: #251b15;
+  --card-foreground: #f3eae4;
+
+  --popover: #251b15;
+  --popover-foreground: #f3eae4;
+
+  --primary: #ff823a;
+  --primary-foreground: #ffffff;
+
+  --secondary: #2d1e16;
+  --secondary-foreground: #f3eae4;
+
+  --muted: #2d1e16;
+  --muted-foreground: #afa098;
+
+  --accent: #2d1e16;
+  --accent-foreground: #f3eae4;
+
+  --border: #3d2c24;
+  --input: #3d2c24;
+  --ring: #ff823a;
+
+  /* Brand Colors (Dark Adjusted) */
+  --brand-sidebar: #1a120e;
+  --brand-primary: #ff823a;
+  --brand-primary-hover: #f27631;
+  --brand-surface: #1a120e;
+  --brand-text: #f3eae4;
+  --brand-muted: #afa098;
+  --brand-border: #3d2c24;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .form-input {
+    @apply w-full px-4 py-2.5 border border-brand-border rounded-xl text-sm bg-brand-surface/50
+           focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary
+           focus:bg-white dark:focus:bg-brand-sidebar/20 transition-all duration-200 text-brand-text placeholder:text-brand-muted/50;
+  }
+  .form-label {
+    @apply block text-sm font-medium text-brand-text mb-1.5;
+  }
 }
