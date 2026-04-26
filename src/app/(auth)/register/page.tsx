@@ -1,41 +1,38 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Eye, EyeOff, Lock, Mail, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, User, Loader2, Phone } from 'lucide-react';
+import toast from 'react-hot-toast';
 
-export default function LoginPage() {
-  const router = useRouter();
-  const [form, setForm] = useState({ email: '', password: '' });
+export default function RegisterPage() {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    const res = await signIn('credentials', {
-      email: form.email,
-      password: form.password,
-      redirect: false,
-    });
-
-    setLoading(false);
-
-    if (res?.error) {
-      setError('Email atau password salah. Coba lagi.');
-    } else {
-      router.push('/dashboard');
+    if (form.password !== form.confirmPassword) {
+      toast.error('Password tidak cocok');
+      return;
     }
+
+    setLoading(true);
+    // Simulate registration
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setLoading(false);
+    toast.success('Registrasi berhasil! Silakan login.');
   };
 
   return (
     <div className="min-h-screen bg-brand-surface flex">
-      {/* Left decorative panel */}
+      {/* Left decorative panel (consistent with login) */}
       <div className="hidden lg:flex lg:w-1/2 bg-brand-sidebar flex-col justify-between p-16 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           {[...Array(6)].map((_, i) => (
@@ -54,31 +51,42 @@ export default function LoginPage() {
         </div>
         <div className="relative">
           <h1 className="text-4xl font-serif text-white font-light leading-tight">Kala Esok</h1>
-          <p className="text-white/60 text-sm mt-2">Admin Dashboard</p>
+          <p className="text-white/60 text-sm mt-2">Daftar Akun Admin Baru</p>
         </div>
         <div className="relative">
           <blockquote className="text-white/80 text-xl font-light italic leading-relaxed">
-            &ldquo;Merencanakan masa depan dengan bijak, memastikan ketenangan untuk yang
-            tercinta.&rdquo;
+            &ldquo;Membangun ekosistem perencanaan yang transparan dan terpercaya.&rdquo;
           </blockquote>
-          <p className="text-white/50 text-sm mt-4">— Kala Esok Platform</p>
         </div>
       </div>
 
-      {/* Right login form */}
+      {/* Right register form */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-sm">
-          <div className="mb-10">
-            <div className="lg:hidden mb-6">
-              <h1 className="text-3xl font-serif text-brand-sidebar dark:text-brand-primary font-light">
-                Kala Esok
-              </h1>
-            </div>
-            <h2 className="text-2xl font-bold text-brand-text">Selamat Datang</h2>
-            <p className="text-sm text-brand-muted mt-1">Masuk ke panel admin Anda</p>
+          <div className="mb-10 text-center lg:text-left">
+            <h2 className="text-2xl font-bold text-brand-text">Daftar Admin</h2>
+            <p className="text-sm text-brand-muted mt-1">Lengkapi data untuk membuat akun</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-medium text-brand-text mb-1.5">
+                Nama Lengkap
+              </label>
+              <div className="relative">
+                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-muted" />
+                <input
+                  type="text"
+                  required
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder="Nama Lengkap"
+                  className="w-full pl-10 pr-4 py-3 border border-brand-border rounded-xl text-sm bg-brand-surface dark:bg-card focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all text-brand-text placeholder:text-brand-muted/50"
+                />
+              </div>
+            </div>
+
             {/* Email */}
             <div>
               <label className="block text-sm font-medium text-brand-text mb-1.5">Email</label>
@@ -89,7 +97,25 @@ export default function LoginPage() {
                   required
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="admin@kalaesok.com"
+                  placeholder="email@example.com"
+                  className="w-full pl-10 pr-4 py-3 border border-brand-border rounded-xl text-sm bg-brand-surface dark:bg-card focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all text-brand-text placeholder:text-brand-muted/50"
+                />
+              </div>
+            </div>
+
+            {/* Phone */}
+            <div>
+              <label className="block text-sm font-medium text-brand-text mb-1.5">
+                Nomor Telepon
+              </label>
+              <div className="relative">
+                <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-muted" />
+                <input
+                  type="tel"
+                  required
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  placeholder="0812..."
                   className="w-full pl-10 pr-4 py-3 border border-brand-border rounded-xl text-sm bg-brand-surface dark:bg-card focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all text-brand-text placeholder:text-brand-muted/50"
                 />
               </div>
@@ -118,11 +144,23 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {error && (
-              <div className="flex items-center gap-2 text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 rounded-xl px-4 py-3 animate-in fade-in slide-in-from-top-2">
-                {error}
+            {/* Confirm Password */}
+            <div>
+              <label className="block text-sm font-medium text-brand-text mb-1.5">
+                Konfirmasi Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-muted" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={form.confirmPassword}
+                  onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+                  placeholder="••••••••"
+                  className="w-full pl-10 pr-4 py-3 border border-brand-border rounded-xl text-sm bg-brand-surface dark:bg-card focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all text-brand-text placeholder:text-brand-muted/50"
+                />
               </div>
-            )}
+            </div>
 
             <button
               type="submit"
@@ -130,27 +168,13 @@ export default function LoginPage() {
               className="w-full py-3.5 bg-brand-primary text-white font-bold rounded-xl hover:bg-brand-primary-hover disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-brand-primary/20"
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              {loading ? 'Memproses...' : 'Masuk'}
+              {loading ? 'Mendaftar...' : 'Daftar Sekarang'}
             </button>
 
-            <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-900/30 rounded-2xl text-[11px] text-amber-700 dark:text-amber-500/80 leading-relaxed">
-              <p className="font-bold mb-1.5 uppercase tracking-wider text-amber-800 dark:text-amber-400">
-                Demo Credentials
-              </p>
-              <div className="flex justify-between items-center opacity-80">
-                <span>
-                  Email: <span className="font-bold">admin@kalaesok.com</span>
-                </span>
-                <span>
-                  Pass: <span className="font-bold">admin123</span>
-                </span>
-              </div>
-            </div>
-
             <p className="text-center text-sm text-brand-muted mt-6">
-              Belum punya akun?{' '}
-              <Link href="/register" className="text-brand-primary font-bold hover:underline">
-                Daftar sekarang
+              Sudah punya akun?{' '}
+              <Link href="/login" className="text-brand-primary font-bold hover:underline">
+                Masuk di sini
               </Link>
             </p>
           </form>
